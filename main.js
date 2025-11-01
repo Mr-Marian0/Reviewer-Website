@@ -6,11 +6,14 @@ const CloseInputRevBtn = document.querySelector('.closeInputRev_btn');
 const ClipBtn = document.querySelector('.clip_btn');
 const ClipArea = document.querySelector('.clip_area');
 const TextInput = document.querySelector('.textInput');
+const SaveBtn = document.querySelector(".save_btn");
+// const WordBtn = document.querySelector('word_btn');
 
 const TextInputId = document.getElementById('createRev_Id');
 const FaddingCreateBtns = document.querySelectorAll('.AllcreateRev_btns');
 
-let selectedWord = null;
+let selectedWords = [];
+let experimentOnly = null;
 let savePreviousPar;
 
 buttonEventFunctions()
@@ -22,7 +25,7 @@ function processText(){
 
     if(!text) {
         ClipArea.innerHTML = '';
-        selectedWord = null;
+        selectedWords = null;
         return false;
     } else {
         const words = text.split(/\s+/).filter(word => word.length > 0);
@@ -43,10 +46,9 @@ function processText(){
             wordButton.addEventListener('click', function() {
                 
                 this.classList.add('selected');
-                selectedWord = this.dataset.originalWord;
-                wordButton.innerHTML = "___"
+                experimentOnly = this.dataset.originalWord;
                 
-                console.log('Selected word: ', selectedWord);
+                console.log('Selected word: ', experimentOnly);
             })
             paragraph.appendChild(wordButton);
 
@@ -84,6 +86,10 @@ function buttonEventFunctions(){
 
             ClipBtn.innerHTML = "Unclip"
 
+            SaveBtn.style.opacity = '1'
+            SaveBtn.style.height = '30px'
+            SaveBtn.style.display = 'inline-block'
+
             // FOR UNDO PURPOSE----------------------
             if(ClipBtn.classList.contains('cliped')){
                 try{
@@ -96,12 +102,18 @@ function buttonEventFunctions(){
                 ClipArea.style.border = 'none'
                 ClipArea.removeChild(document.querySelector('.clip_paragraph'));
                 ClipBtn.innerHTML = "Clip"
-                // ClipBtn.classList.toggle('cliped');
+
+                SaveBtn.style.opacity = '0'
+                SaveBtn.style.height = '0px'
+                SaveBtn.style.display = 'none'
+
+
                 } catch(error){
                     console.log("Reason why button not changed!: "+error);
                 }
             }
 
+            
             ClipBtn.classList.toggle('cliped');
         } else {
             alert('Please put your note first.')
@@ -120,10 +132,22 @@ function buttonEventFunctions(){
         ClipArea.style.border = 'none'
 
         ClipBtn.innerHTML = "Clip"
+        SaveBtn.style.height = '0px'
+        SaveBtn.style.display = 'none'
+        SaveBtn.style.opacity = '0';
 
         FaddingCreateBtns.forEach(button => {
             button.classList.toggle('clipButtonFade')
         })
+    })
+
+    SaveBtn.addEventListener('click', () => {
+        const SelectedWordBtn = document.querySelectorAll('.word-btn.selected');
+        SelectedWordBtn.forEach(words => {
+            selectedWords.push(words.textContent.trim());
+        })
+
+        console.log("Here are the selected WORDS: ", selectedWords);
     })
 
     ReviewBtn.addEventListener('click', () => {

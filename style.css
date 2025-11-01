@@ -113,6 +113,13 @@ body{
     gap: 0.5rem;
 }
 
+.save_btn{
+    opacity: 0;
+    height: 0;
+    display: none;
+    cursor: pointer;
+}
+
 .clip_btn, .closeInputRev_btn{
     height: 30px;
     opacity: 0;
