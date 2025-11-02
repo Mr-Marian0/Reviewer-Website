@@ -7,6 +7,9 @@ const ClipBtn = document.querySelector('.clip_btn');
 const ClipArea = document.querySelector('.clip_area');
 const TextInput = document.querySelector('.textInput');
 const SaveBtn = document.querySelector(".save_btn");
+// REVIEW SECTION-
+const StartReview = document.querySelector('.start_review');
+const CloseStartReviewBtn = document.querySelector('.closeStartReview_btn');
 // const WordBtn = document.querySelector('word_btn');
 
 const TextInputId = document.getElementById('createRev_Id');
@@ -15,6 +18,7 @@ const FaddingCreateBtns = document.querySelectorAll('.AllcreateRev_btns');
 let selectedWords = [];
 let experimentOnly = null;
 let savePreviousPar;
+let inputText // Used to store the paragraph/notes/sentences
 
 buttonEventFunctions()
 
@@ -74,7 +78,7 @@ function buttonEventFunctions(){
     ClipBtn.addEventListener('click', () => {
 
         ClipArea.innerHTML = ""
-        let inputText = TextInput.value;
+        inputText = TextInput.value;
 
         if(processText()){
             TextInput.style.width = '0px'
@@ -107,6 +111,9 @@ function buttonEventFunctions(){
                 SaveBtn.style.height = '0px'
                 SaveBtn.style.display = 'none'
 
+                selectedWords = []; //Used to reset or erase saved array words
+                inputText = "";
+
 
                 } catch(error){
                     console.log("Reason why button not changed!: "+error);
@@ -136,6 +143,9 @@ function buttonEventFunctions(){
         SaveBtn.style.display = 'none'
         SaveBtn.style.opacity = '0';
 
+        selectedWords = []; //reset or erase saved array words
+        inputText = "";
+
         FaddingCreateBtns.forEach(button => {
             button.classList.toggle('clipButtonFade')
         })
@@ -147,12 +157,39 @@ function buttonEventFunctions(){
             selectedWords.push(words.textContent.trim());
         })
 
+        let userInputData = [
+            {paragraph: `${inputText}`, selectedW: `${selectedWords}`}
+        ]
+        
+        saveNote(userInputData);
+
+        console.log("Paragraph: ", inputText)
         console.log("Here are the selected WORDS: ", selectedWords);
+        console.log("Object to be saved: ", userInputData)
     })
+
+    // -----------------------REVIEW SECTION-------------------------
 
     ReviewBtn.addEventListener('click', () => {
-        
+        StartReview.classList.toggle('startRevFade');
     })
-    
+
+    CloseStartReviewBtn.addEventListener('click', () => {
+        StartReview.classList.toggle('startRevFade');
+    })
 }
 
+function saveNote(note) {
+    // 1. Get existing notes (if any)
+    let notes = JSON.parse(localStorage.getItem('userNotes')) || [];
+
+    //2. Add the new one
+    notes.push(note);
+
+    // 3. Save back to localStorage
+    localStorage.setItem('userNotes', JSON.stringify(notes));
+}
+
+function getNotes(){
+    return JSON.parse(localStorage.getItem('userNotes')) || [];
+}
