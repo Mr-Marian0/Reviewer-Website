@@ -33,7 +33,6 @@ function processText(){
         return false;
     } else {
         const words = text.split(/\s+/).filter(word => word.length > 0);
-        console.log(words)
 
         ClipArea.innerHTML = ''; //Clear clip area
 
@@ -96,7 +95,7 @@ function buttonEventFunctions(){
 
             // FOR UNDO PURPOSE----------------------
             if(ClipBtn.classList.contains('cliped')){
-                try{
+
                 TextInput.value = savePreviousPar;
                 TextInput.style.width = '70%'
                 TextInput.style.height = '100%'
@@ -113,11 +112,6 @@ function buttonEventFunctions(){
 
                 selectedWords = []; //Used to reset or erase saved array words
                 inputText = "";
-
-
-                } catch(error){
-                    console.log("Reason why button not changed!: "+error);
-                }
             }
 
             
@@ -157,20 +151,26 @@ function buttonEventFunctions(){
             selectedWords.push(words.textContent.trim());
         })
 
-        let userInputData = [
-            {paragraph: `${inputText}`, selectedW: `${selectedWords}`}
-        ]
+        let userInputData = {
+            paragraph: inputText, 
+            selectedW: selectedWords
+        };
         
         saveNote(userInputData);
 
-        console.log("Paragraph: ", inputText)
-        console.log("Here are the selected WORDS: ", selectedWords);
-        console.log("Object to be saved: ", userInputData)
     })
 
     // -----------------------REVIEW SECTION-------------------------
 
     ReviewBtn.addEventListener('click', () => {
+
+        const ObjectData = getNotes();
+
+        ObjectData.forEach((note, index) => {
+            const {paragraph, selectedW} = note;
+            console.log(`Note ${index + 1}:`, paragraph, selectedW)
+        })
+
         StartReview.classList.toggle('startRevFade');
     })
 
