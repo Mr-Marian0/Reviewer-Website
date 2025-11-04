@@ -7,9 +7,18 @@ const ClipBtn = document.querySelector('.clip_btn');
 const ClipArea = document.querySelector('.clip_area');
 const TextInput = document.querySelector('.textInput');
 const SaveBtn = document.querySelector(".save_btn");
+const QuestionArea = document.querySelector('.question_area');
+const NextQuestion = document.querySelector('.next_question');
+const SkipQuestion = document.querySelector('.skip_question');
+
 // REVIEW SECTION-
 const StartReview = document.querySelector('.start_review');
 const CloseStartReviewBtn = document.querySelector('.closeStartReview_btn');
+let shuffledQuestions = []
+let currentQuestionIndex = 0;
+let userAnswers = []; // Store user's answers with question info
+let answeredQuestions = new Set(); // Track which questions have been answered
+
 // const WordBtn = document.querySelector('word_btn');
 
 const TextInputId = document.getElementById('createRev_Id');
@@ -164,14 +173,52 @@ function buttonEventFunctions(){
 
     ReviewBtn.addEventListener('click', () => {
 
+        QuestionArea.innerHTML = ""
         const ObjectData = getNotes();
+
+        if (ObjectData.length === 0) {
+            alert('No questions available. Please create some notes first.');
+            return;
+        }
+
+        // Generate random question
+        const randomQuestionNumber = getRandomWholeNumber(0, ObjectData.length - 1)
+
+        
+        const question = document.createElement('p')
+        question.className = 'paragraphQuestion';
+        question.textContent = ObjectData[randomQuestionNumber].paragraph;
+
+        QuestionArea.appendChild(question);
+
+        const ParagraphQuestion = document.querySelector('.paragraphQuestion');
+
+        // Used to find the word to be BLANKED
+        let text = ParagraphQuestion.textContent;
+
+        ObjectData[randomQuestionNumber].selectedW.forEach(word => {
+            const regex = new RegExp(`\\b${word}\\b`, 'gi');
+
+            text = text.replace(
+                regex, `<input type='text' class='guessInput' data-answer="${word}">`
+            );
+        });
 
         ObjectData.forEach((note, index) => {
             const {paragraph, selectedW} = note;
-            console.log(`Note ${index + 1}:`, paragraph, selectedW)
+            // console.log(`Note ${index + 1}:`, paragraph, selectedW)
         })
 
         StartReview.classList.toggle('startRevFade');
+        ParagraphQuestion.innerHTML = text;
+    })
+
+    NextQuestion.addEventListener('click', () => {
+
+    })
+
+    SkipQuestion.addEventListener('click', () => {
+
     })
 
     CloseStartReviewBtn.addEventListener('click', () => {
@@ -192,4 +239,11 @@ function saveNote(note) {
 
 function getNotes(){
     return JSON.parse(localStorage.getItem('userNotes')) || [];
+}
+
+function getRandomWholeNumber(min, max){
+    min = Math.ceil(min);
+    max = Math.floor(max);
+
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
