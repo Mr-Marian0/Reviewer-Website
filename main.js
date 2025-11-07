@@ -127,6 +127,28 @@ function buttonEventFunctions(){
     })
 
     CloseInputRevBtn.addEventListener('click', ()=>{
+        addReviewCloseAll();
+    })
+
+    SaveBtn.addEventListener('click', () => {
+        const SelectedWordBtn = document.querySelectorAll('.word-btn.selected');
+        SelectedWordBtn.forEach(words => {
+            selectedWords.push(words.textContent.trim());
+        })
+
+        let userInputData = {
+            paragraph: inputText, 
+            selectedW: selectedWords
+        };
+        
+        saveNote(userInputData);
+
+        addReviewCloseAll()
+
+        alert("Note is now saved");
+    })
+
+    function addReviewCloseAll(){
         ClipArea.innerHTML = ""
         TextInput.value = ""
         TextInputId.classList.toggle('inputRevFade');
@@ -151,22 +173,7 @@ function buttonEventFunctions(){
         setTimeout(()=>{
             TextInput.classList.toggle('textInputToggle');
         },500);
-    })
-
-    SaveBtn.addEventListener('click', () => {
-        const SelectedWordBtn = document.querySelectorAll('.word-btn.selected');
-        SelectedWordBtn.forEach(words => {
-            selectedWords.push(words.textContent.trim());
-        })
-
-        let userInputData = {
-            paragraph: inputText, 
-            selectedW: selectedWords
-        };
-        
-        saveNote(userInputData);
-
-    })
+    }
 
     // -----------------------REVIEW SECTION-------------------------
 
