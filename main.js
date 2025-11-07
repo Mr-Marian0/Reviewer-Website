@@ -43,7 +43,6 @@ function processText(){
         return false;
     } else {
         const words = text.split(/\s+/).filter(word => word.length > 0);
-
         ClipArea.innerHTML = ''; //Clear clip area
 
         const paragraph = document.createElement('p');
@@ -70,6 +69,7 @@ function processText(){
                 }
         })
         ClipArea.appendChild(paragraph);
+        
         return true;
     }
 }
@@ -90,12 +90,8 @@ function buttonEventFunctions(){
         inputText = TextInput.value;
 
         if(processText()){
-            TextInput.style.width = '0px'
-            TextInput.style.height = '0px'
-            TextInput.style.display = 'none'
-            ClipArea.style.width = '70%';
-            ClipArea.style.height = '100%'
-            ClipArea.style.border = 'solid 2px black'
+            TextInput.classList.toggle('textInputToggleClose')
+            ClipArea.classList.toggle('clipAreaToggle');
 
             ClipBtn.innerHTML = "Unclip"
 
@@ -107,12 +103,10 @@ function buttonEventFunctions(){
             if(ClipBtn.classList.contains('cliped')){
 
                 TextInput.value = savePreviousPar;
-                TextInput.style.width = '70%'
-                TextInput.style.height = '100%'
-                TextInput.style.display = 'inline-block'
+                TextInput.classList.toggle('textInputToggle');
                 
-                ClipArea.style.width = '0px';
-                ClipArea.style.border = 'none'
+                ClipArea.classList.toggle('clipAreaToggleOff');
+                if (ClipArea.classList.contains('clipAreaToggleOff')) ClipArea.classList.toggle('clipAreaToggleOff');
                 ClipArea.removeChild(document.querySelector('.clip_paragraph'));
                 ClipBtn.innerHTML = "Clip"
 
@@ -136,11 +130,11 @@ function buttonEventFunctions(){
         ClipArea.innerHTML = ""
         TextInput.value = ""
         TextInputId.classList.toggle('inputRevFade');
-        TextInput.style.width = '70%'
-        TextInput.style.height = '100%'
-        TextInput.style.display = 'inline-block'
-        ClipArea.style.width = '0px';
-        ClipArea.style.border = 'none'
+        if(ClipBtn.classList.contains('cliped')) ClipBtn.classList.toggle('cliped');
+        if(TextInput.classList.contains('textInputToggleClose')) TextInput.classList.toggle('textInputToggleClose');
+        if(TextInput.classList.contains('clipAreaToggle')) ClipArea.classList.toggle('clipAreaToggle');
+        if(ClipArea.classList.contains('clipAreaToggleOff')) ClipArea.classList.toggle('clipAreaToggleOff');
+        if(ClipArea.classList.contains('clipAreaToggle')) ClipArea.classList.toggle('clipAreaToggle');
 
         ClipBtn.innerHTML = "Clip"
         SaveBtn.style.height = '0px'
@@ -153,6 +147,10 @@ function buttonEventFunctions(){
         FaddingCreateBtns.forEach(button => {
             button.classList.toggle('clipButtonFade')
         })
+
+        setTimeout(()=>{
+            TextInput.classList.toggle('textInputToggle');
+        },500);
     })
 
     SaveBtn.addEventListener('click', () => {
