@@ -11,6 +11,11 @@ const QuestionArea = document.querySelector('.question_area');
 const NextQuestion = document.querySelector('.next_question');
 const SkipQuestion = document.querySelector('.skip_question');
 
+// SAVED NOTES SECTION
+const SavedNotesBtn = document.querySelector('.saved_notes_btn');
+const CloseSaveNotesBtn = document.querySelector('.closeSavedNotes_btn');
+const SavedNotesContainer = document.querySelector('.saved_notes_container');
+
 // REVIEW SECTION-
 const StartReview = document.querySelector('.start_review');
 const CloseStartReviewBtn = document.querySelector('.closeStartReview_btn');
@@ -261,6 +266,24 @@ function buttonEventFunctions(){
         } while (answeredQuestions.has(currentQuestionIndex));
 
         displayQuestion(currentQuestionIndex);
+    })
+    
+    SavedNotesBtn.addEventListener('click', () => {
+
+        getNotes().forEach(par =>{
+            console.log(par.paragraph)
+        });
+
+        SavedNotesContainer.classList.toggle('SavedNotesContainerToggle');
+    })
+
+    CloseSaveNotesBtn.addEventListener('click', () => {
+        SavedNotesContainer.classList.toggle('SavedNotesContainerToggle');
+        SavedNotesContainer.classList.toggle('SavedNotesContainerClose');
+        
+        setTimeout(()=>{
+            SavedNotesContainer.classList.toggle('SavedNotesContainerClose');
+        }, 200);
     })
 
     CloseStartReviewBtn.addEventListener('click', () => {
