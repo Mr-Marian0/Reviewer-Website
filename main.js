@@ -15,6 +15,8 @@ const SkipQuestion = document.querySelector('.skip_question');
 const SavedNotesBtn = document.querySelector('.saved_notes_btn');
 const CloseSaveNotesBtn = document.querySelector('.closeSavedNotes_btn');
 const SavedNotesContainer = document.querySelector('.saved_notes_container');
+const SavedNotes = document.querySelector('.saved_notes');
+const DeleteParagraphBtn = document.querySelector('.deleteParagraph_btn');
 
 // REVIEW SECTION-
 const StartReview = document.querySelector('.start_review');
@@ -34,6 +36,7 @@ let selectedWords = [];
 let experimentOnly = null;
 let savePreviousPar;
 let inputText // Used to store the paragraph/notes/sentences
+let createUniqueId = 0; //used to create Unique ID in: list of saved question
 
 buttonEventFunctions()
 
@@ -136,6 +139,20 @@ function buttonEventFunctions(){
     })
 
     SaveBtn.addEventListener('click', () => {
+
+        let selectedExist = false;
+        const WordBtnContainsSelectedW = document.querySelectorAll('.word-btn');
+
+        WordBtnContainsSelectedW.forEach(wordBtn => {
+            if(wordBtn.classList.contains('selected')){
+                selectedExist = true
+            }
+        })
+
+        if(!selectedExist) return alert('Please select word before saving.')
+
+        
+
         const SelectedWordBtn = document.querySelectorAll('.word-btn.selected');
         SelectedWordBtn.forEach(words => {
             selectedWords.push(words.textContent.trim());
@@ -270,11 +287,34 @@ function buttonEventFunctions(){
     
     SavedNotesBtn.addEventListener('click', () => {
 
-        getNotes().forEach(par =>{
-            console.log(par.paragraph)
-        });
+        // Clear
+        SavedNotes.textContent = ''
+        createUniqueId = 0;
+        
+        //DISPLAY THE LIST AGAIN
+        DisplayNotesOnSavedList();
 
         SavedNotesContainer.classList.toggle('SavedNotesContainerToggle');
+    })
+
+    let i = 0;
+    // Delete all the marked only in saved paragarph
+    DeleteParagraphBtn.addEventListener('click', () => {
+        createUniqueId = 0
+        const ParagraphList = document.querySelectorAll('.paragraph_list');
+
+        if(!ParagraphList.length) return alert("NO LIST TO BE DELETED");
+
+        ParagraphList.forEach(eachDiv => {
+            if(eachDiv.classList.contains('markAsCheck')){
+                
+                const num = parseInt(eachDiv.id.replace(/\D/g, ''))
+                deleteSavedItem(num);
+                alert("DELETE SUCCESS: ", num)
+            }
+        })
+        SavedNotes.textContent = ''
+        DisplayNotesOnSavedList();
     })
 
     CloseSaveNotesBtn.addEventListener('click', () => {
@@ -293,6 +333,44 @@ function buttonEventFunctions(){
             StartReview.style.display = "flex";
         }, 500);
     })
+}
+
+function DisplayNotesOnSavedList(){
+    
+    getNotes().forEach(par =>{
+
+            const listOfParagraph = document.createElement('div')
+            listOfParagraph.className = "paragraph_list";
+            listOfParagraph.id = `qId${createUniqueId}`;
+            listOfParagraph.textContent = par.paragraph
+            SavedNotes.appendChild(listOfParagraph);
+
+            const SavedParagraphQuestion = document.getElementById(`qId${createUniqueId}`)
+            let textQuestion = SavedParagraphQuestion.textContent;
+
+            par.selectedW.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                textQuestion = textQuestion.replace(
+                    regex,
+                    `<span class="selectedWord"> _${word}_ </span>`
+                )
+            });
+
+            SavedParagraphQuestion.innerHTML = textQuestion;
+            createUniqueId++;
+
+        });
+
+    const ParagraphList = document.querySelectorAll('.paragraph_list');
+        
+        // Used to detect clickEvent on PARAGRAPH LIST
+    ParagraphList.forEach(eachDiv => {
+        eachDiv.addEventListener('click', () => {
+            console.log(eachDiv.id)
+            eachDiv.classList.toggle('markAsCheck');
+        })
+    })
+
 }
 
 //(Fisher-Yates Algorithm)
@@ -420,4 +498,13 @@ function showResults() {
         ReviewBtn.click(); // Restart the review
     });
     QuestionArea.appendChild(restartBtn);
+}
+
+function deleteSavedItem(index){
+    let data = JSON.parse(localStorage.getItem("userNotes")) || [];
+
+    if(index >= 0 && index < data.length){
+        data.splice(index, 1);
+        localStorage.setItem('userNotes', JSON.stringify(data));
+    }
 }
