@@ -17,6 +17,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: clamp(320px, 100vw, 100%);
     gap: 0.2rem;
     min-height: 100dvh;
     height: auto;
@@ -36,7 +37,7 @@ body{
     border-radius: 1rem;
     width: min(700px, 95%);
     max-width: 100%;
-    height: auto;
+    height: clamp(100px, 50vh, 300px);
 }
 
 .container1{
@@ -101,7 +102,7 @@ body{
     opacity: 1;
     width: min(700px, 95%);
     max-width: 100%;
-    height: auto;
+    height: clamp(100px, 50vh, 300px);
     border: solid 5px black;
     border-radius: 1rem;
     backdrop-filter: blur(10px);
@@ -176,8 +177,8 @@ body{
 } .start_review.startRevFade{
     z-index: 2;
     opacity: 1;
-    width: 95%;
-    height: 95%;
+    width: clamp(320px, 95vw, 1000px);
+    height: clamp(120px, 95vh, 700px);;
     border: solid 5px white;
 }
 
@@ -266,7 +267,7 @@ body{
     height: 0px;
     border: solid 5px white;
     backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1); 
 
     transition: opacity ease 0.5s;
 } .saved_notes_container.SavedNotesContainerToggle{
@@ -288,10 +289,13 @@ body{
     height: 40px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .deleteParagraph_btn, .closeSavedNotes_btn{
     cursor: pointer;
+    width: clamp(10px, 10vw, 30px);
+    height: clamp(10px, 10vh, 30px);
 
     transition: transform ease 0.2s;
 } .deleteParagraph_btn:hover, .closeSavedNotes_btn:hover{
@@ -354,20 +358,14 @@ body{
 
 @media screen and (max-width: 768px) {
 
-    /* body{
-        display:inline-block;
-        margin: center;
-        width: 100%;
-    } */
-
     .input_rev{
         flex-direction: column;
         align-items: center;
     }
 
     .input_rev.inputRevFade{
-        width: clamp(100px,50vw, 800px);
-        height: 500px;
+        width: clamp(100px, 90vw, 800px);
+        height: clamp(200px, 100vh, 500px);
         border: solid 5px black;
         border-radius: 1rem;
         backdrop-filter: blur(10px);
@@ -400,6 +398,13 @@ body{
         height: 25px;
     }
 
+    /* BUTTONS */
+
+    .closeStartReview_btn{
+        width: clamp(10px, 10vw, 50px);
+        height: clamp(10px, 10vw, 50px);
+    }
+
 }
 
 @media screen and (max-width: 480px) { 
@@ -415,5 +420,12 @@ body{
         font-size: 1rem;
         width: 150px;
         height: 25px;
+    }
+}
+
+@media screen and (max-width: 250px) {
+    body{
+        min-width: 320px;
+        min-height: 300px;
     }
 }
