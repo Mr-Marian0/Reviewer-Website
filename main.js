@@ -151,21 +151,33 @@ function buttonEventFunctions(){
 
         if(!selectedExist) return alert('Please select word before saving.')
 
-        
-
         const SelectedWordBtn = document.querySelectorAll('.word-btn.selected');
+        const allWordBtn = document.querySelectorAll('.word-btn');
+        let allWordBtnArr = [];
+        let SelectedWordBtnIndex = [];
+
         SelectedWordBtn.forEach(words => {
             selectedWords.push(words.textContent.trim());
         })
 
+        allWordBtn.forEach( (Allword, index) => {
+            allWordBtnArr.push(Allword);
+
+            if(Allword.classList.contains('selected')){SelectedWordBtnIndex.push(index)}
+        })
+
         let userInputData = {
             paragraph: inputText, 
-            selectedW: selectedWords
+            selectedW: selectedWords,
+            selectedWrdBtnIndex: SelectedWordBtnIndex
         };
+
+        console.log("Selected Words",userInputData.selectedW);
+        console.log("INDEX OF SELECTED: ", userInputData.selectedWrdBtnIndex)
         
         saveNote(userInputData);
 
-        addReviewCloseAll()
+        // addReviewCloseAll()
 
         alert("Note is now saved");
     })
@@ -297,22 +309,15 @@ function buttonEventFunctions(){
         SavedNotesContainer.classList.toggle('SavedNotesContainerToggle');
     })
 
-    let i = 0;
     // Delete all the marked only in saved paragarph
     DeleteParagraphBtn.addEventListener('click', () => {
         createUniqueId = 0
         const ParagraphList = document.querySelectorAll('.paragraph_list');
 
         if(!ParagraphList.length) return alert("NO LIST TO BE DELETED");
+        
+        deleteSavedItem(ParagraphList);
 
-        ParagraphList.forEach(eachDiv => {
-            if(eachDiv.classList.contains('markAsCheck')){
-                
-                const num = parseInt(eachDiv.id.replace(/\D/g, ''))
-                deleteSavedItem(num);
-                alert("DELETE SUCCESS: ", num)
-            }
-        })
         SavedNotes.textContent = ''
         DisplayNotesOnSavedList();
     })
@@ -389,25 +394,29 @@ function displayQuestion(index) {
     
     const currentQuestion = shuffledQuestions[index];
     
-    // Create question paragraph
-    const question = document.createElement('p');
-    question.className = 'paragraphQuestion';
-    question.textContent = currentQuestion.paragraph;
-    QuestionArea.appendChild(question);
-    
-    const ParagraphQuestion = document.querySelector('.paragraphQuestion');
-    let text = ParagraphQuestion.textContent;
-    
     // Replace selected words with input fields
-    currentQuestion.selectedW.forEach(word => {
-        const regex = new RegExp(`\\b${word}\\b`, 'gi');
-        text = text.replace(
-            regex, 
-            `<input type='text' class='guessInput' data-answer="${word}">`
-        );
-    });
+    const words = currentQuestion.paragraph.split(" ").filter(word => word !== "");
+
+    currentQuestion.selectedWrdBtnIndex.forEach( (slcIndex,i) => {
+        words[slcIndex] = `<input class="guessInput" data-answer="${currentQuestion.selectedW[i]}">`
+        console.log("WORD INDEX", words[slcIndex])
+    })
     
-    ParagraphQuestion.innerHTML = text;
+    //TURNS THE OBJECT "currentQuestion" BAcK TO PARAGRAPH AGAIN.
+    words.forEach((element, index) => {
+        //Add spaces before element if it's not the first one
+        if(index > 0){
+            QuestionArea.appendChild(document.createTextNode(' '))
+        }
+
+        if(element.startsWith('<input')){
+            const temp = document.createElement('div');
+            temp.innerHTML = element;
+            QuestionArea.appendChild(temp.firstChild);
+        } else {
+            QuestionArea.appendChild(document.createTextNode(element));
+        }
+    })
     
     // Display progress';
     ProgressInfo.textContent = `Question ${index + 1} of ${shuffledQuestions.length} (Answered: ${answeredQuestions.size})`;
@@ -500,11 +509,17 @@ function showResults() {
     QuestionArea.appendChild(restartBtn);
 }
 
-function deleteSavedItem(index){
+function deleteSavedItem(PassedParagraphList){
     let data = JSON.parse(localStorage.getItem("userNotes")) || [];
 
-    if(index >= 0 && index < data.length){
-        data.splice(index, 1);
-        localStorage.setItem('userNotes', JSON.stringify(data));
-    }
+    PassedParagraphList.forEach(eachDiv => {
+            if(eachDiv.classList.contains('markAsCheck')){
+                
+                const num = parseInt(eachDiv.id.replace(/\D/g, ''))
+                
+                data.splice(num, 1);
+            }
+
+            localStorage.setItem('userNotes', JSON.stringify(data));
+        })
 }

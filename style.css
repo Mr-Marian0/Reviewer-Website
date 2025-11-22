@@ -195,8 +195,6 @@ body{
 }
 
 .question_area{
-    display: flex;
-    text-align: justify;
     hyphens: auto;
     align-items: center;
     text-indent: 1rem;
@@ -205,6 +203,7 @@ body{
     margin-right: 2rem;
     width: 90%;
     height: 90%;
+    font-size: 2.5rem;
     border: solid 2px black;
 }
 
@@ -389,10 +388,10 @@ body{
         width: 100%;
     }
 
-    .paragraphQuestion{
-        height: 100%;
-        font-size: 2rem;
-    } .guessInput{
+    .question_area{
+        font-size: 1.5;
+    }
+    .guessInput{
         font-size: 1.5rem;
         width: 150px;
         height: 25px;
@@ -412,11 +411,7 @@ body{
     .progress-info{
         font-size: 1rem;
     }
-
-    .paragraphQuestion{
-        height: 100%;
-        font-size: 1.5rem;
-    } .guessInput{
+     .guessInput{
         font-size: 1rem;
         width: 150px;
         height: 25px;
