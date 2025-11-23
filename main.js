@@ -399,7 +399,6 @@ function displayQuestion(index) {
 
     currentQuestion.selectedWrdBtnIndex.forEach( (slcIndex,i) => {
         words[slcIndex] = `<input class="guessInput" data-answer="${currentQuestion.selectedW[i]}">`
-        console.log("WORD INDEX", words[slcIndex])
     })
     
     //TURNS THE OBJECT "currentQuestion" BAcK TO PARAGRAPH AGAIN.
@@ -472,12 +471,13 @@ function showResults() {
         questionResult.appendChild(paragraphSnippet);
         
         questionData.answers.forEach((answer, aIndex) => {
-            totalAnswers++;
+            if (questionData.answers.length - 1 === aIndex) totalAnswers++; //1 SCORE PER QUESTIONS
+
             const answerDiv = document.createElement('div');
             answerDiv.className = 'answer-item';
             
             const isCorrect = answer.userAnswer.toLowerCase() === answer.correctAnswer.toLowerCase();
-            if (isCorrect) correctCount++;
+            if (isCorrect && questionData.answers.length - 1 === aIndex) correctCount++;
             
             answerDiv.innerHTML = `
                 <span style="color: ${isCorrect ? 'green' : 'red'}">
