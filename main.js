@@ -509,17 +509,27 @@ function showResults() {
     QuestionArea.appendChild(restartBtn);
 }
 
-function deleteSavedItem(PassedParagraphList){
+function deleteSavedItem(PassedParagraphList) {
     let data = JSON.parse(localStorage.getItem("userNotes")) || [];
 
-    PassedParagraphList.forEach(eachDiv => {
-            if(eachDiv.classList.contains('markAsCheck')){
-                
-                const num = parseInt(eachDiv.id.replace(/\D/g, ''))
-                
-                data.splice(num, 1);
-            }
+    // 1. Collect all indices to delete
+    let indicesToRemove = [];
 
-            localStorage.setItem('userNotes', JSON.stringify(data));
-        })
+    PassedParagraphList.forEach(eachDiv => {
+        if (eachDiv.classList.contains('markAsCheck')) {
+            const num = parseInt(eachDiv.id.replace(/\D/g, ''));
+            indicesToRemove.push(num);
+        }
+    });
+    console.log(indicesToRemove);
+    // 2. Sort indices descending
+    indicesToRemove.sort((a, b) => b - a);
+
+    // 3. Delete items using descending order
+    indicesToRemove.forEach(i => {
+        data.splice(i, 1);
+    });
+
+    // 4. Save updated storage
+    localStorage.setItem('userNotes', JSON.stringify(data));
 }
