@@ -395,7 +395,7 @@ function displayQuestion(index) {
     const currentQuestion = shuffledQuestions[index];
     
     // Replace selected words with input fields
-    const words = currentQuestion.paragraph.split(" ").filter(word => word !== "");
+    const words = currentQuestion.paragraph.split(/\s+/).filter(word => word !== "");
 
     currentQuestion.selectedWrdBtnIndex.forEach( (slcIndex,i) => {
         words[slcIndex] = `<input class="guessInput" data-answer="${currentQuestion.selectedW[i]}">`
@@ -480,10 +480,10 @@ function showResults() {
             if (isCorrect && questionData.answers.length - 1 === aIndex) correctCount++;
             
             answerDiv.innerHTML = `
-                <span style="color: ${isCorrect ? 'green' : 'red'}">
+                <span style="color: ${isCorrect ? 'lightgreen' : 'red'}">
                     ${isCorrect ? '✓' : '✗'} Your answer: "${answer.userAnswer}"
                 </span>
-                ${!isCorrect ? `<span style="color: blue"> (Correct: "${answer.correctAnswer}")</span>` : ''}
+                ${!isCorrect ? `<span style="color: yellow"> (Correct: "${answer.correctAnswer}")</span>` : ''}
             `;
             
             questionResult.appendChild(answerDiv);
@@ -521,7 +521,6 @@ function deleteSavedItem(PassedParagraphList) {
             indicesToRemove.push(num);
         }
     });
-    console.log(indicesToRemove);
     // 2. Sort indices descending
     indicesToRemove.sort((a, b) => b - a);
 

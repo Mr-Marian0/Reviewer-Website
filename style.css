@@ -195,6 +195,7 @@ body{
 }
 
 .question_area{
+    overflow-y: scroll;
     hyphens: auto;
     align-items: center;
     text-indent: 1rem;
@@ -203,8 +204,20 @@ body{
     margin-right: 2rem;
     width: 90%;
     height: 90%;
-    font-size: 2.5rem;
-    border: solid 2px black;
+    font-size: clamp(1rem, 3vw, 2.5rem);
+}
+
+.results-container{
+    padding: 15px 0;
+    font-size: clamp(1rem, 1vw, 3rem);
+    background-color: var(--clr-accent);
+}
+
+.restart-btn{
+    cursor: pointer;
+    width: 200px;
+    height: 40px;
+    border-radius: 0.2rem;
 }
 
 .closeStartReview_btn{
@@ -306,7 +319,6 @@ body{
 .saved_notes{
     width: 100%;
     height: 100%;
-    border: solid black 2px;
     padding: 0.4rem;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -334,16 +346,17 @@ body{
 
 .paragraph_list{
     width: 99%;
-    height: 50px;
+    height: auto;
     margin: 0.4rem;
     padding: 0.5rem;
-    background-color: white;
+    background-color: var(--clr-accent);
     display: flex;
     align-items: center;
     cursor: pointer;
     overflow: auto;
 } .paragraph_list:hover{
-    background-color: whitesmoke;
+    background-color: var(--clr-secondary);
+    color: white;
 } .paragraph_list.markAsCheck{
     border: solid var(--clr-secondary) 3px;
     text-decoration: line-through;
