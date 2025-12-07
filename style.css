@@ -6,8 +6,11 @@
 
 :root{
     --clr-base: #330055;
-    --clr-secondary: #DD00FF;
-    --clr-accent: #670aa5;
+    --clr-base1: #DD00FF;
+    --clr-base2: #670aa5;
+    --clr-secondary: gold;
+    --clr-secondary1: yellow;
+    --clr-accent: orange;
     --clr-white1: white;
     --clr-black1: black;
 }
@@ -25,6 +28,46 @@ body{
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 1000'%3E%3Cg fill-opacity='0.25'%3E%3Ccircle fill='%23330055' cx='50' cy='0' r='50'/%3E%3Cg fill='%233a015d' %3E%3Ccircle cx='0' cy='50' r='50'/%3E%3Ccircle cx='100' cy='50' r='50'/%3E%3C/g%3E%3Ccircle fill='%23410165' cx='50' cy='100' r='50'/%3E%3Cg fill='%2348026e' %3E%3Ccircle cx='0' cy='150' r='50'/%3E%3Ccircle cx='100' cy='150' r='50'/%3E%3C/g%3E%3Ccircle fill='%23500376' cx='50' cy='200' r='50'/%3E%3Cg fill='%2357047e' %3E%3Ccircle cx='0' cy='250' r='50'/%3E%3Ccircle cx='100' cy='250' r='50'/%3E%3C/g%3E%3Ccircle fill='%235f0587' cx='50' cy='300' r='50'/%3E%3Cg fill='%2367068f' %3E%3Ccircle cx='0' cy='350' r='50'/%3E%3Ccircle cx='100' cy='350' r='50'/%3E%3C/g%3E%3Ccircle fill='%236f0798' cx='50' cy='400' r='50'/%3E%3Cg fill='%237707a0' %3E%3Ccircle cx='0' cy='450' r='50'/%3E%3Ccircle cx='100' cy='450' r='50'/%3E%3C/g%3E%3Ccircle fill='%238008a9' cx='50' cy='500' r='50'/%3E%3Cg fill='%238909b1' %3E%3Ccircle cx='0' cy='550' r='50'/%3E%3Ccircle cx='100' cy='550' r='50'/%3E%3C/g%3E%3Ccircle fill='%239109ba' cx='50' cy='600' r='50'/%3E%3Cg fill='%239a09c3' %3E%3Ccircle cx='0' cy='650' r='50'/%3E%3Ccircle cx='100' cy='650' r='50'/%3E%3C/g%3E%3Ccircle fill='%23a309cb' cx='50' cy='700' r='50'/%3E%3Cg fill='%23ad09d4' %3E%3Ccircle cx='0' cy='750' r='50'/%3E%3Ccircle cx='100' cy='750' r='50'/%3E%3C/g%3E%3Ccircle fill='%23b608dc' cx='50' cy='800' r='50'/%3E%3Cg fill='%23c007e5' %3E%3Ccircle cx='0' cy='850' r='50'/%3E%3Ccircle cx='100' cy='850' r='50'/%3E%3C/g%3E%3Ccircle fill='%23c905ee' cx='50' cy='900' r='50'/%3E%3Cg fill='%23d303f6' %3E%3Ccircle cx='0' cy='950' r='50'/%3E%3Ccircle cx='100' cy='950' r='50'/%3E%3C/g%3E%3Ccircle fill='%23D0F' cx='50' cy='1000' r='50'/%3E%3C/g%3E%3C/svg%3E");
     background-attachment: fixed;
     background-size: contain;
+}
+
+.header1{
+    width: 100%;
+    height: 80px;
+    background-color: var(--clr-base2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.title_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    width: 250px;
+    height: 60px;
+}
+.head_title{
+    color: var(--clr-secondary);
+}
+.logo1{
+    background-color: var(--clr-secondary1);
+    box-shadow: 0 0 0 3px var(--clr-secondary1);
+    border-radius: 0.5rem;
+    font-size: 2rem;
+} .logo1 span:nth-child(1){
+    display: inline-block;
+    transform: scaleX(-1);
+} .logo1 span:nth-child(2){
+    font-size: 1.5rem;
+}
+
+.home_container{
+    width: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .main_container{
@@ -210,7 +253,7 @@ body{
 .results-container{
     padding: 15px 0;
     font-size: clamp(1rem, 1vw, 3rem);
-    background-color: var(--clr-accent);
+    background-color: var(--clr-base2);
 }
 
 .restart-btn{
@@ -311,7 +354,7 @@ body{
 
     transition: transform ease 0.2s;
 } .deleteParagraph_btn:hover, .closeSavedNotes_btn:hover{
-    fill: var(--clr-secondary);
+    fill: var(--clr-base1);
     transform: scale(1.1);
 }
 
@@ -349,16 +392,16 @@ body{
     height: auto;
     margin: 0.4rem;
     padding: 0.5rem;
-    background-color: var(--clr-accent);
+    background-color: var(--clr-base2);
     display: flex;
     align-items: center;
     cursor: pointer;
     overflow: auto;
 } .paragraph_list:hover{
-    background-color: var(--clr-secondary);
+    background-color: var(--clr-base1);
     color: white;
 } .paragraph_list.markAsCheck{
-    border: solid var(--clr-secondary) 3px;
+    border: solid var(--clr-base1) 3px;
     text-decoration: line-through;
 }
 
