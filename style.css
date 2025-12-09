@@ -43,13 +43,15 @@ body{
     justify-content: center;
     align-items: center;
     gap: 0.8rem;
-    width: 250px;
+    width: clamp(100px, 90vw, 250px);
     height: 60px;
 }
 .head_title{
     color: var(--clr-secondary);
+    width: clamp(50px, 100%, 150px);
 }
 .logo1{
+    display: flex;
     background-color: var(--clr-secondary1);
     box-shadow: 0 0 0 3px var(--clr-secondary1);
     border-radius: 0.5rem;
@@ -59,6 +61,7 @@ body{
     transform: scaleX(-1);
 } .logo1 span:nth-child(2){
     font-size: 1.5rem;
+    transform: translateY(2px);
 }
 
 .home_container{
