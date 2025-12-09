@@ -480,3 +480,19 @@ body{
         min-height: 300px;
     }
 }
+
+/* Facebook browser safety layer */
+@supports (-webkit-touch-callout: none) {
+
+  .start_review.startRevFade{
+      height: calc(var(--fbvh) * 90);
+  }
+
+  .input_rev.inputRevFade{
+      height: calc(var(--fbvh) * 80);
+  }
+
+  .saved_notes_container.SavedNotesContainerToggle{
+      height: calc(var(--fbvh) * 80);
+  }
+}

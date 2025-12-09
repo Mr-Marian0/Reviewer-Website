@@ -110,5 +110,17 @@
     
 
     <script src="main.js"></script>
+    <script>
+        (function () {
+        function fixVH() {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--fbvh', `${vh}px`);
+        }
+
+        fixVH();
+        window.addEventListener('resize', fixVH);
+        })();
+    </script>
+
 </body>
 </html>
