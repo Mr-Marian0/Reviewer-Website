@@ -110,16 +110,16 @@
     
 
     <script src="main.js"></script>
-    <script>
-        (function () {
-        function fixVH() {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--fbvh', `${vh}px`);
-        }
+        <div id="openChrome" style="display:none;">
+            <a href="intent://your-site.com#Intent;scheme=https;package=com.android.chrome;end;">
+                Open in Google Chrome
+            </a>
+        </div>
 
-        fixVH();
-        window.addEventListener('resize', fixVH);
-        })();
+    <script>
+        if (navigator.userAgent.includes("FBAN") || navigator.userAgent.includes("FBAV")) {
+        document.getElementById("openChrome").style.display = "block";
+        }
     </script>
 
 </body>
