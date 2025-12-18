@@ -10,6 +10,11 @@ const SaveBtn = document.querySelector(".save_btn");
 const QuestionArea = document.querySelector('.question_area');
 const NextQuestion = document.querySelector('.next_question');
 const SkipQuestion = document.querySelector('.skip_question');
+const TutorialBtn = document.querySelector('.tutorial_btn');
+const Tutorial_Modal = document.getElementById('tutorial_modal_id');
+const CloseTutorial = document.querySelector('.tutorial_close');
+const DisplayImages = document.querySelector('.display_images');
+const Dots = document.querySelectorAll('.dots');
 
 // SAVED NOTES SECTION
 const SavedNotesBtn = document.querySelector('.saved_notes_btn');
@@ -26,6 +31,7 @@ let shuffledQuestions = []
 let currentQuestionIndex = 0;
 let userAnswers = []; // Store user's answers with question info
 let answeredQuestions = new Set(); // Track which questions have been answered
+let TutorialCountReset = 1;
 
 // const WordBtn = document.querySelector('word_btn');
 
@@ -36,10 +42,30 @@ let selectedWords = [];
 let experimentOnly = null;
 let savePreviousPar;
 let inputText // Used to store the paragraph/notes/sentences
-let createUniqueId = 0; //used to create Unique ID in: list of saved question
+let createUniqueId = 1; //used to create Unique ID in: list of saved question
+
+const tutorialImages = {
+    tutorial1: 'img/tutorial1.png',
+    tutorial2: 'img/tutorial2.png',
+    tutorial3: 'img/tutorial3.png',
+    tutorial4: 'img/tutorial4.png',
+}
 
 buttonEventFunctions()
 
+function IterateTutorialImageDisplay(iteration){
+    Dots.forEach(dot => {
+        dot.style.backgroundColor = '#DD00FF';
+    });
+    let dotIndex = document.getElementById(`dot${iteration}`);
+    dotIndex.style.backgroundColor = 'gold';
+
+    DisplayImages.style.background = `url(${tutorialImages['tutorial'+( (iteration % 4) + 1 )]})`;
+    DisplayImages.style.backgroundPosition = 'center';
+    DisplayImages.style.backgroundSize = 'cover';
+
+    iteration === 4 ? TutorialCountReset = 0 : null;
+}
 
 function processText(){
     const text = TextInput.value.trim();
@@ -322,6 +348,19 @@ function buttonEventFunctions(){
         DisplayNotesOnSavedList();
     })
 
+    //Tutorial Modal
+    TutorialBtn.addEventListener('click', () => {
+        openTutorialModal();
+    })
+    CloseTutorial.addEventListener('click', () => {
+        Tutorial_Modal.style.display = 'none'
+    })
+
+    DisplayImages.addEventListener('click', () => {
+        TutorialCountReset++;
+        IterateTutorialImageDisplay(TutorialCountReset);
+    })
+
     CloseSaveNotesBtn.addEventListener('click', () => {
         SavedNotesContainer.classList.toggle('SavedNotesContainerToggle');
         SavedNotesContainer.classList.toggle('SavedNotesContainerClose');
@@ -338,6 +377,10 @@ function buttonEventFunctions(){
             StartReview.style.display = "flex";
         }, 500);
     })
+}
+
+function openTutorialModal(){
+    Tutorial_Modal.style.display = 'flex';
 }
 
 function DisplayNotesOnSavedList(){
