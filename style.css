@@ -290,7 +290,14 @@ body{
     background-color: var(--clr-base2);
 }
 
+.question-result{
+    border: solid 2px black;
+    padding: 1rem;
+    margin: 1rem;
+}
+
 .restart-btn{
+    background-color: var(--clr-secondary2);
     cursor: pointer;
     width: 200px;
     height: 40px;
@@ -366,7 +373,7 @@ body{
 } .saved_notes_container.SavedNotesContainerToggle{
     opacity: 1;
     display: flex;
-    width: min(800px, 95%);
+    width: min(1000px, 95%);
     max-width: 100%;
     height: min(600px, 90vh);
     overflow: auto;
@@ -514,6 +521,7 @@ body{
 }
 
 .paragraph_list{
+    font-size: clamp(0.5rem, 2vw, 1.5rem);
     width: 99%;
     height: auto;
     margin: 0.4rem;
@@ -532,8 +540,8 @@ body{
 }
 
 .selectedWord{
-    color: var(--clr-base);
-    border: solid black 1px;
+    color: var(--clr-secondary2);
+    font-size: clamp(0.5rem, 2vw, 1.2rem);
 }
 /* ------------------------MEDIA QUERIES---------------------------- */
 

@@ -400,11 +400,11 @@ function DisplayNotesOnSavedList(){
                 const regex = new RegExp(`\\b${word}\\b`, 'gi');
                 textQuestion = textQuestion.replace(
                     regex,
-                    `<span class="selectedWord"> _${word}_ </span>`
+                    `<span class="selectedWord"> ${word} </span>`
                 )
             });
 
-            SavedParagraphQuestion.innerHTML = textQuestion;
+            SavedParagraphQuestion.innerHTML = `<p class="saved_paragraph">${textQuestion}</p>`;
             createUniqueId++;
 
         });
