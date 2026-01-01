@@ -60,7 +60,7 @@ function IterateTutorialImageDisplay(iteration){
     let dotIndex = document.getElementById(`dot${iteration}`);
     dotIndex.style.backgroundColor = 'gold';
 
-    DisplayImages.style.background = `url(${tutorialImages['tutorial'+( (iteration % 4) + 1 )]})`;
+    DisplayImages.style.background = `url(${tutorialImages['tutorial'+iteration]})`;
     DisplayImages.style.backgroundPosition = 'center';
     DisplayImages.style.backgroundSize = 'cover';
 
@@ -575,3 +575,46 @@ function deleteSavedItem(PassedParagraphList) {
     // 4. Save updated storage
     localStorage.setItem('userNotes', JSON.stringify(data));
 }
+
+// -----------------------------------------MUSIC CONTROL-----------------------------------
+
+// Replace the music control code at the end of your main.js with this:
+
+const musicToggle = document.getElementById('musicToggle');
+const bgMusic = document.getElementById('bgMusic');
+let isMusicPlaying = false;
+
+// Array of your music files
+const musicFiles = [
+    'music/music1.mp3',
+    'music/music2.mp3',
+    'music/music3.mp3'
+];
+
+// Select random music on page load
+const randomMusic = musicFiles[Math.floor(Math.random() * musicFiles.length)];
+bgMusic.src = randomMusic;
+
+bgMusic.volume = 0.3;
+
+musicToggle.addEventListener('click', () => {
+    if (isMusicPlaying) {
+        bgMusic.pause();
+        musicToggle.textContent = '🔇 Music OFF';
+        isMusicPlaying = false;
+    } else {
+        bgMusic.play().catch(e => {
+            console.log('Autoplay blocked by browser');
+            alert('Click again to play music');
+        });
+        musicToggle.textContent = '🔊 Music ON';
+        isMusicPlaying = true;
+    }
+});
+
+// When song ends, play another random song
+bgMusic.addEventListener('ended', () => {
+    const nextMusic = musicFiles[Math.floor(Math.random() * musicFiles.length)];
+    bgMusic.src = nextMusic;
+    bgMusic.play();
+});
