@@ -15,6 +15,7 @@ const Tutorial_Modal = document.getElementById('tutorial_modal_id');
 const CloseTutorial = document.querySelector('.tutorial_close');
 const DisplayImages = document.querySelector('.display_images');
 const Dots = document.querySelectorAll('.dots');
+const printSelectedBtn = document.querySelector('.printSelected');
 
 // SAVED NOTES SECTION
 const SavedNotesBtn = document.querySelector('.saved_notes_btn');
@@ -377,6 +378,71 @@ function buttonEventFunctions(){
             StartReview.style.display = "flex";
         }, 500);
     })
+
+    printSelectedBtn.addEventListener('click', async () => {
+        const checkedElements = SavedNotes.querySelectorAll('.markAsCheck');
+
+        if(checkedElements.length === 0){
+            return alert('Please select at least one paragraph to print.');
+        }
+
+        const selectedContent = Array.from(checkedElements).map(el => el.textContent);
+        console.log(selectedContent);
+
+        // Disable button and show loading state
+        printSelectedBtn.disabled = true;
+        const originalHTML = printSelectedBtn.innerHTML;
+        printSelectedBtn.innerHTML = '<span>Generating...</span>';
+
+        try {
+            // Fetch from backend API
+            const response = await fetch('/api/reviewQuestions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paragraphs: selectedContent })
+            });
+
+            const rawText = await response.text();
+            console.log('RAW RESPONSE:', rawText);
+
+            // Parse JSON response
+            let data;
+            try {
+                data = JSON.parse(rawText);
+            } catch (e) {
+                alert('Backend did not return JSON. Check server logs.');
+                return;
+            }
+
+            if (!response.ok) {
+                alert(data.error || 'Server error');
+                return;
+            }
+
+            // Success - generate PDF
+            const resultText = data.result;
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const lines = doc.splitTextToSize(resultText, 180);
+            doc.text(lines, 10, 10);
+
+            doc.save('review-questions.pdf');
+
+            alert('PDF generated and downloaded successfully!');
+
+        } catch (err) {
+            console.error(err);
+            alert('Something went wrong: ' + err.message);
+        } finally {
+            // Re-enable button
+            printSelectedBtn.disabled = false;
+            printSelectedBtn.innerHTML = originalHTML;
+        }
+
+
+    })
+    
 }
 
 function openTutorialModal(){
