@@ -462,11 +462,14 @@ function DisplayNotesOnSavedList(){
             const SavedParagraphQuestion = document.getElementById(`qId${createUniqueId}`)
             let textQuestion = SavedParagraphQuestion.textContent;
 
+        
+
             par.selectedW.forEach(word => {
-                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                const safeWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`\\b${safeWord}\\b`, 'gi');
                 textQuestion = textQuestion.replace(
                     regex,
-                    `<span class="selectedWord"> ${word} </span>`
+                    `<span class="selectedWord"> ${safeWord} </span>`
                 )
             });
 
