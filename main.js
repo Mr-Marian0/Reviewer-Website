@@ -431,22 +431,30 @@ function buttonEventFunctions(){
             doc.text(lines, 10, 10);
 
             if (isFacebook) {
-                // For Facebook's in-app browser, create a blob and download
+                // For Facebook's in-app browser on mobile, use alternative methods
                 const pdfBlob = doc.output('blob');
                 const blobUrl = URL.createObjectURL(pdfBlob);
                 
-                // Create a temporary link and trigger download
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = 'review-questions.pdf';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Clean up the blob URL after a short delay
-                setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
-                
-                alert('PDF download started. Check your downloads folder!');
+                try {
+                    // Try method 1: Direct download using location (most reliable on mobile)
+                    const link = document.createElement('a');
+                    link.href = blobUrl;
+                    link.download = 'review-questions.pdf';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(blobUrl);
+                    }, 200);
+                    
+                    alert('PDF download started!');
+                } catch (downloadErr) {
+                    // Fallback: Open in new window
+                    window.open(blobUrl, '_blank');
+                    alert('PDF opened in new tab. Long-press to save or use Chrome for better compatibility.');
+                }
             } else {
                 // For regular browsers, download directly
                 doc.save('review-questions.pdf');
