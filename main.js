@@ -386,6 +386,18 @@ function buttonEventFunctions(){
             return alert('Please select at least one paragraph to print.');
         }
 
+        // Check if user is in Facebook's in-app browser
+        const isFacebook = navigator.userAgent.includes("FBAN") || navigator.userAgent.includes("FBAV");
+
+        if (isFacebook) {
+            // For Facebook users, direct them to Chrome
+            const openInChrome = confirm('📱 Facebook browser cannot download PDFs.\n\nDo you want to open this website in Chrome?');
+            if (openInChrome) {
+                window.location.href = 'intent://mr-marian0.github.io/Reviewer-Website/#Intent;scheme=https;package=com.android.chrome;end;';
+            }
+            return;
+        }
+
         const selectedContent = Array.from(checkedElements).map(el => el.textContent);
         console.log(selectedContent);
 
@@ -393,9 +405,6 @@ function buttonEventFunctions(){
         printSelectedBtn.disabled = true;
         const originalHTML = printSelectedBtn.innerHTML;
         printSelectedBtn.innerHTML = '<span>Generating...</span>';
-
-        // Check if user is in Facebook's in-app browser
-        const isFacebook = navigator.userAgent.includes("FBAN") || navigator.userAgent.includes("FBAV");
 
         try {
             // Fetch from backend API
@@ -430,36 +439,8 @@ function buttonEventFunctions(){
             const lines = doc.splitTextToSize(resultText, 180);
             doc.text(lines, 10, 10);
 
-            if (isFacebook) {
-                // For Facebook's in-app browser on mobile, use alternative methods
-                const pdfBlob = doc.output('blob');
-                const blobUrl = URL.createObjectURL(pdfBlob);
-                
-                try {
-                    // Try method 1: Direct download using location (most reliable on mobile)
-                    const link = document.createElement('a');
-                    link.href = blobUrl;
-                    link.download = 'review-questions.pdf';
-                    link.style.display = 'none';
-                    document.body.appendChild(link);
-                    link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
-                    
-                    setTimeout(() => {
-                        document.body.removeChild(link);
-                        URL.revokeObjectURL(blobUrl);
-                    }, 200);
-                    
-                    alert('PDF download started!');
-                } catch (downloadErr) {
-                    // Fallback: Open in new window
-                    window.open(blobUrl, '_blank');
-                    alert('PDF opened in new tab. Long-press to save or use Chrome for better compatibility.');
-                }
-            } else {
-                // For regular browsers, download directly
-                doc.save('review-questions.pdf');
-                alert('PDF generated and downloaded successfully!');
-            }
+            doc.save('review-questions.pdf');
+            alert('PDF generated and downloaded successfully!');
 
         } catch (err) {
             console.error(err);
