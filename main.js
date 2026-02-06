@@ -431,10 +431,22 @@ function buttonEventFunctions(){
             doc.text(lines, 10, 10);
 
             if (isFacebook) {
-                // For Facebook's in-app browser, open PDF in new window
-                const pdfDataUrl = doc.output('datauristring');
-                window.open(pdfDataUrl, '_blank');
-                alert('PDF opened in new window. You can save it from there or copy the link to open in Chrome.');
+                // For Facebook's in-app browser, create a blob and download
+                const pdfBlob = doc.output('blob');
+                const blobUrl = URL.createObjectURL(pdfBlob);
+                
+                // Create a temporary link and trigger download
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = 'review-questions.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Clean up the blob URL after a short delay
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+                
+                alert('PDF download started. Check your downloads folder!');
             } else {
                 // For regular browsers, download directly
                 doc.save('review-questions.pdf');
