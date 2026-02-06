@@ -394,6 +394,9 @@ function buttonEventFunctions(){
         const originalHTML = printSelectedBtn.innerHTML;
         printSelectedBtn.innerHTML = '<span>Generating...</span>';
 
+        // Check if user is in Facebook's in-app browser
+        const isFacebook = navigator.userAgent.includes("FBAN") || navigator.userAgent.includes("FBAV");
+
         try {
             // Fetch from backend API
             const response = await fetch('/api/reviewQuestions', {
@@ -427,9 +430,16 @@ function buttonEventFunctions(){
             const lines = doc.splitTextToSize(resultText, 180);
             doc.text(lines, 10, 10);
 
-            doc.save('review-questions.pdf');
-
-            alert('PDF generated and downloaded successfully!');
+            if (isFacebook) {
+                // For Facebook's in-app browser, open PDF in new window
+                const pdfDataUrl = doc.output('datauristring');
+                window.open(pdfDataUrl, '_blank');
+                alert('PDF opened in new window. You can save it from there or copy the link to open in Chrome.');
+            } else {
+                // For regular browsers, download directly
+                doc.save('review-questions.pdf');
+                alert('PDF generated and downloaded successfully!');
+            }
 
         } catch (err) {
             console.error(err);
