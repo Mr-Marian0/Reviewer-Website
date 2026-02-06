@@ -26,7 +26,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "system",
-            content: "You create clear multiple-choice quiz questions. Format each question as: Question [number]: [question text]\nA) [option A]\nB) [option B]\nC) [option C]\nD) [option D]\nCorrect Answer: [letter]\n\n",
+            content: "You create clear multiple-choice quiz questions. Format the output as follows:\n\n[QUESTIONS]\nQuestion 1: [question text]\nA) [option A]\nB) [option B]\nC) [option C]\nD) [option D]\n\nQuestion 2: [question text]\nA) [option A]\nB) [option B]\nC) [option C]\nD) [option D]\n\n(Continue for all questions)\n\n[ANSWER KEY]\n1. [letter]\n2. [letter]\n3. [letter]\netc.\n\nUse clear, serif-font friendly formatting.",
           },
           {
             role: "user",
