@@ -429,11 +429,12 @@ body{
 .btn_container1{
     display: flex;
     gap: 1rem;
-    width: clamp(150px, 50vw, 200px);
+    width: clamp(1px, 50vw, 200px);
 }
 
 .head_title_savedNotes{
     justify-self: center;
+    font-size: clamp(1rem, 2vw, 2rem);
 }
 
 /* ------------------------OPTION SECTION---------------------------- */
@@ -661,7 +662,11 @@ body{
 
 }
 
-@media screen and (max-width: 480px) { 
+@media screen and (max-width: 480px) {
+
+    .printSelected{
+        font-size: 0;
+    }
 
     .progress-info{
         font-size: 1rem;
