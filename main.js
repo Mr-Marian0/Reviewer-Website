@@ -240,6 +240,9 @@ function buttonEventFunctions(){
 
     ReviewBtn.addEventListener('click', () => {
 
+        NextQuestion.style.display = 'inline-block';
+        SkipQuestion.style.display = 'inline-block';
+
         StartReview.style.display = 'flex'
         QuestionArea.innerHTML = ""
         const ObjectData = getNotes();
@@ -567,6 +570,9 @@ function getRandomWholeNumber(min, max){
 }
 
 function showResults() {
+    NextQuestion.style.display = 'none';
+    SkipQuestion.style.display = 'none';
+
     QuestionArea.innerHTML = "";
     
     const resultsContainer = document.createElement('div');
