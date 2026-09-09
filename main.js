@@ -1,4 +1,3 @@
-
 // BUTTON CLASSES AND ID
 const CreateRevBtn = document.querySelector('.createRev_btn');
 const ReviewBtn = document.querySelector('.review_btn');
